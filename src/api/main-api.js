@@ -1,8 +1,9 @@
-const MainService = require('../services/main-service')
+const MainService = require('../services/main-service');
 
 module.exports = (app) => {
 
     const service = new MainService();
+
 
     app.get('/', async (req, res, next) => {
 
@@ -44,7 +45,7 @@ module.exports = (app) => {
 
             const api_data = { id };
 
-            const data = await service.GetDataById( api_data );
+            const data = await service.GetDataById(api_data);
 
             res.json(data);
 
