@@ -1,18 +1,18 @@
 
 const pool = require('../postgres/db')
 
-async function newPost(post_type, post_title, post_description, author_id) {
+async function newPost(post_id, post_type, post_title, post_description, author_id) {
 
 	try {
 		// Check if title eists 
-		const data_exists = await pool.query("SELECT * FROM post_tb WHERE post_description = $1", [description]);
+		const data_exists = await pool.query("SELECT * FROM post_tb WHERE post_title = $1", [post_title]);
 
-		if (data_exists.rows) throw "Book aready exists"
+		if (data_exists.rows) throw "Post aready exists"
 
-		const description = [post_type, post_title, post_description, author_id]
+		const description = [post_id, post_type, post_title, post_description, author_id]
 
 		const data = await pool.query(
-			"INSERT INTO post_tb (description) VALUES($1, $2, $3, $4) RETURNING *",
+			"INSERT INTO post_tb (description) VALUES($1, $2, $3, $4, $5) RETURNING *",
 			description
 		);
 
@@ -26,13 +26,13 @@ async function newPost(post_type, post_title, post_description, author_id) {
 
 }
 
-async function update_post(post_id, post_type, post_title, post_description, author_id) {
+async function update_post(post_id, post_type, post_title, post_description) {
 
 	try {
 		// Check if title eists 
 		const data_exists = await pool.query("SELECT * FROM post_tb WHERE post_id = $1", [post_id]);
 
-		if (!data_exists.rows[0]) throw "Book not found"
+		if (!data_exists.rows[0]) throw "Post not found"
 
 		const description = [post_type, post_title, post_description, post_id]
 
@@ -59,7 +59,7 @@ async function delPost(post_id) {
 		// Check if title eists 
 		const data = await pool.query("SELECT * FROM post_tb WHERE post_id = $1", [post_id]);
 
-		if (!data.rows[0]) throw "Book not found"
+		if (!data.rows[0]) throw "Post not found"
 
 		await pool.query("DELETE FROM post_tb WHERE post_id = $1", [post_id])
 
@@ -138,7 +138,7 @@ async function delAuthor(author_id) {
 		// Check if title eists 
 		const data = await pool.query("SELECT * FROM author_tb WHERE author_id = $1", [author_id]);
 
-		if (!data.rows[0]) throw "Book not found"
+		if (!data.rows[0]) throw "Author not found"
 
 		await pool.query("DELETE FROM author_tb WHERE author_id = $1", [author_id])
 

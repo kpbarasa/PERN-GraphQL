@@ -1,5 +1,5 @@
 -- Create DB 
-CREATE DATABASE test_db;
+CREATE DATABASE post_db;
 
 -- Create table 
 CREATE TABLE author_tb(

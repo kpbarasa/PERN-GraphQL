@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 require("dotenv").config();
 
 // Load config
-dotenv.config({ path: './config/config.env' })
+dotenv.config({ path: '.env' })
 
 const Pool = require("pg").Pool;
 

@@ -22,8 +22,6 @@ const posts = [
   { post_id: 8, post_type:"a", post_title: 'Beyond the Shadows', post_description:"Description", author_id: 3 }
 ]
 
-
-
 const PostType = new GraphQLObjectType({  // Graph QL object  POSTS
   name: 'posts',
   description: 'This represents a POST  by an author',
@@ -107,7 +105,7 @@ const RootMutationType = new GraphQLObjectType({
   fields: () => ({
     addPost: {
       type: PostType,
-      description: 'Add Author',
+      description: 'Add new post',
       args: {
         post_type: { type: new GraphQLNonNull(GraphQLString) },
         post_title: { type: new GraphQLNonNull(GraphQLString) },
@@ -116,13 +114,22 @@ const RootMutationType = new GraphQLObjectType({
         author_id: { type: new GraphQLNonNull(GraphQLInt) }
       },
       resolve: async (parent, args) => {
-        const data = { post_type: args.post_type, post_title: args.post_title, post_description: args.post_description, date: args.date, author_id: args.author_id }
+
+        const data = { 
+          post_id: posts.length + 1, 
+          post_type: args.post_type, 
+          post_title: args.post_title, 
+          post_description: args.post_description, 
+          date: args.date, 
+          author_id: args.author_id 
+        }
 
         const newBPostdb = await newPost(
+          data.post_id,
           data.post_type,
           data.post_title,
           data.post_description,
-          book.date,
+          data.date,
           data.author_id
         )
 
@@ -153,6 +160,81 @@ const RootMutationType = new GraphQLObjectType({
     },
     deletePost: {
       type: PostType,
+      description: 'Delete post',
+      args: {
+        post_id: { type: new GraphQLNonNull(GraphQLInt) }
+      },
+      resolve: async (parent, args) => {
+        const data = { post_id: args.post_id }
+
+        const updateData_db = await delPost(
+          data.post_id
+        )
+
+        return updateData_db
+
+      }
+    },
+    addAuthor: {
+      type: AuthorType,
+      description: 'Add Author',
+      args: {
+        author_name: { type: new GraphQLNonNull(GraphQLString) },
+        author_age: { type: new GraphQLNonNull(GraphQLInt) },
+        author_type: { type: new GraphQLNonNull(GraphQLString) },
+        author_email: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: async (parent, args) => {
+        const data = { 
+          author_id: authors.length + 1,
+          author_name: args.author_name, 
+          author_age: args.author_age, 
+          author_type: args.author_type, 
+          author_email: args.author_email, 
+          author_id: args.author_id }
+
+        const newBPostdb = await newAuthor(
+          data.author_name,
+          data.author_age,
+          data.author_type,
+          data.author_email,
+          data.author_id,
+        )
+
+        return newBPostdb
+
+      }
+    },
+    updateAuthor: {
+      type: AuthorType,
+      description: 'Update posts',
+      args: {
+        author_name: { type: new GraphQLNonNull(GraphQLString) },
+        author_age: { type: new GraphQLNonNull(GraphQLInt) },
+        author_type: { type: new GraphQLNonNull(GraphQLString) },
+        author_email: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: async (parent, args) => {
+
+        const data = { 
+          author_name: args.author_name, 
+          author_age: args.author_age, 
+          author_type: args.author_type, 
+          author_email: args.author_email
+        }
+
+        const updtData_db = await update_post(
+          data.post_type,
+          data.post_title,
+          data.post_description
+        )
+
+        return updtData_db
+
+      }
+    },
+    deleteAuthor: {
+      type: AuthorType,
       description: 'Delete post',
       args: {
         post_id: { type: new GraphQLNonNull(GraphQLInt) }
