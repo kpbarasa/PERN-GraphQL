@@ -27,6 +27,17 @@ class PostgraceBDError extends BaseError {
   }
 }
 
+// 500 MongoDb connection  Error
+class graphQlError extends BaseError {
+  constructor(description = "GraphQL error") {
+    super(
+      "GraphQL CRUD error",
+      STATUS_CODES.INTERNAL_ERROR,
+      description
+    );
+  }
+}
+
 // 500 Internal Error
 class APIError extends BaseError {
   constructor(description = "api error") {
@@ -60,6 +71,7 @@ class NotFoundError extends BaseError {
 }
 
 module.exports = {
+  graphQlError,
   PostgraceBDError,
   APIError,
   ValidationError,

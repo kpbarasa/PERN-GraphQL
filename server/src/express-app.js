@@ -14,10 +14,11 @@ module.exports = async(app) => {
         mutation: RootMutationType
     })
     
-    app.use('/posts/api', expressGraphQL({
+    app.use('/graphql/app', expressGraphQL({
         schema: schema,
         graphiql: true
     }))
+    
 
     //api
     MainApi(app);

@@ -1,72 +1,58 @@
-const database = require('../database/');
-const { MainRepository } = require('../database/')
-const {FormateData} = require('../utils/');
-const {NotFoundError} = require('../utils/errors/app-errors');
+const { MaingaphQlFunction } = require('../database/')
+const { GraphQlFunctions } = require('../database/graphql/');
+const { FormateData } = require('../utils/');
+const { NotFoundError } = require('../utils/errors/app-errors');
 
 class mainService {
 
     constructor() {
-        this.repository = new MainRepository;
+        this.gaphQlFunction = new GraphQlFunctions;
     }
 
-    async MainServiceFunction() {
+    async newPost(post_type, post_title, post_description, author_id) {
 
-        const {data} = await this.repository.GetData()
+        const data = await this.gaphQlFunction.newPost(post_type, post_title, post_description, author_id)
 
-        if(data.length === 0 || !data) throw new NotFoundError("Sorry no data found");
+        if (!data) throw new NotFoundError("Sorry no data found");
 
         const payload = {
-            message:"success", 
-            status:"404" ,
-            response_data:data, 
+            message: "success",
+            status: "404",
+            response_data: data,
         };
 
         return FormateData(payload)
 
     };
 
-    async GetData() {
+    async update_post(post_id, post_type, post_title, post_description) {
 
-        const {data} = await this.repository.GetData();
+        await this.gaphQlFunction.update_post(post_id, post_type, post_title, post_description)
 
-        if(data.length === 0 || !data) throw new NotFoundError("Sorry no data found");
+        const data = await this.gaphQlFunction.GetDataById(post_id)
 
         const payload = {
-            message:"Data successfully found", 
-            status:"404",
-            response_data:data, 
+            message: "Data successfully updated",
+            status: "404",
+            response_data: data,
         };
 
         return FormateData(payload);
 
     };
 
-    async GetDataById(api_data) {
+    async delPost(post_id) {
 
-        const {data} = await this.repository.GetDataById(api_data)
+        const response_data = await this.gaphQlFunction.delPost(post_id);
 
-        if(data.length === 0 || !data) throw new NotFoundError("Sorry no data found");
+        if (!response_data) throw new NotFoundError("Sorry no data found");
 
-        const payload = {
-            message:"Data successfully found", 
-            status:"404" ,
-            response_data:data, 
-        };
-
-        return FormateData(payload);
-
-    };
-
-    async PostData(api_data) {
-
-        const response_data = await this.repository.PostData(api_data)
-
-        if(!response_data) throw new NotFoundError("Sorry unable to post data");
+        await this.gaphQlFunction.DeleteData(post_id);
 
         const payload = {
-            message:"Data successfully posted", 
-            status:"404" ,
-            response_data, 
+            message: "Data successfully deleted",
+            status: "404",
+            response_data,
         };
 
         const data = FormateData(payload)
@@ -75,45 +61,38 @@ class mainService {
 
     };
 
-    async UpdateData(api_data) {
+    async getPosts() {
 
-        const update_response = await this.repository.UpdateData(api_data)
+        const { data } = await this.gaphQlFunction.getPosts();
 
-        if(update_response !== "success") throw new NotFoundError("Sorry unable to update data");
-
-        const {data} = await this.repository.GetDataById(api_data)
+        if (!data) throw new NotFoundError("Sorry no data found");
 
         const payload = {
-            message:"Data successfully updated", 
-            status:"404" ,
-            response_data:data, 
+            message: "Data successfully found",
+            status: "404",
+            response_data: data,
         };
 
         return FormateData(payload);
 
     };
 
-    async DeleteData(api_data) {
+    async getPostById(api_data) {
 
-        const response_data = await this.repository.GetDataById(api_data);
+        const data = await this.gaphQlFunction.getPostById(api_data)
 
-        if(!response_data) throw new NotFoundError("Sorry no data found");
-
-        const deleted_data = await this.repository.DeleteData(api_data);
-
-        if(!deleted_data) throw new NotFoundError("Sorry Unable to delete data");
+        if (!data) throw new NotFoundError("Sorry no data found");
 
         const payload = {
-            message:"Data successfully deleted", 
-            status:"404" ,
-            response_data, 
+            message: "Data successfully found",
+            status: "404",
+            response_data: data,
         };
 
-        const data = FormateData(payload)
-
-        return data;
+        return FormateData(payload);
 
     };
+
 };
 
 module.exports = mainService;

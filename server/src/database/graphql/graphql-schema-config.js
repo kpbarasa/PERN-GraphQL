@@ -1,5 +1,5 @@
 
-const { newPost, update_post, delPost, newAuthor, update_author, delAuthor} = require('./graphql-repository-functions');
+const { newPost, update_post, delPost, newAuthor, update_author, delAuthor} = require('./');
 const { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt, GraphQLNonNull } = require('graphql');
 // SCHEMAS
 // const posts = require('./graphql-books-schemas')

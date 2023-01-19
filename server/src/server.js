@@ -1,6 +1,5 @@
 const express = require('express');
 const expressApp = require('./express-app')
-const {databaseConnection} = require('./database')
 const errorHandler = require('./utils/errors')
 
 const {PORT} = require('./config')
