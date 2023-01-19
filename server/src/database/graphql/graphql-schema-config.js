@@ -1,28 +1,14 @@
 
 const { newPost, update_post, delPost, newAuthor, update_author, delAuthor} = require('./');
 const { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt, GraphQLNonNull } = require('graphql');
+const {graphQlSchemas} = require('./')
 // SCHEMAS
 // const posts = require('./graphql-books-schemas')
 // const authors = require('./graphql-author-schemas')
 
-const authors = [
-  { author_id: 1, author_name: 'J. K. Rowling', author_age: 10,author_type:"a", author_email:"eamil@email.com" },
-  { author_id: 2, author_name: 'J. R. R. Tolkien', author_age: 10,author_type:"b", author_email:"eamil@email1.com"  },
-  { author_id: 3, author_name: 'Brent Weeks',  author_age: 10,author_type:"a", author_email:"eamil@email2.com"  }
-]
-
-const posts = [
-  { post_id: 1, post_type:"a", post_title: 'Harry Potter and the Chamber of Secrets', post_description:"Description", author_id: 1 },
-  { post_id: 2, post_type:"b", post_title: 'Harry Potter and the Prisoner of Azkaban', post_description:"Description", author_id: 1 },
-  { post_id: 3, post_type:"c", post_title: 'Harry Potter and the Goblet of Fire', post_description:"Description", author_id: 1 },
-  { post_id: 4, post_type:"a", post_title: 'The Fellowship of the Ring', post_description:"Description", author_id: 2 },
-  { post_id: 5, post_type:"b", post_title: 'The Two Towers', post_description:"Description", author_id: 2 },
-  { post_id: 6, post_type:"b", post_title: 'The Return of the King', post_description:"Description", author_id: 2 },
-  { post_id: 7, post_type:"c", post_title: 'The Way of Shadows', post_description:"Description", author_id: 3 },
-  { post_id: 8, post_type:"a", post_title: 'Beyond the Shadows', post_description:"Description", author_id: 3 }
-]
-
-
+const graphql_schema = new graphQlSchemas;
+const posts = graphql_schema.postData();
+ const authors = graphql_schema.autherData();
 
 const PostType = new GraphQLObjectType({  // Graph QL object  POSTS
   name: 'posts',
@@ -37,7 +23,8 @@ const PostType = new GraphQLObjectType({  // Graph QL object  POSTS
     posts: {   //return all authors of author
       type: AuthorType,
       resolve: async (post) => {
-        const data =  authors.find((author => author.author_id === post.author_id))
+        const data =  await authors.find((author => author.author_id === post.author_id))
+        console.log(data);
         return data
       }
     }
@@ -55,8 +42,9 @@ const AuthorType = new GraphQLObjectType({
     author_email: { type: new GraphQLNonNull(GraphQLString) },
     authors: {
       type: new GraphQLList(PostType),
-      resolve: (author) => {
-        return posts.filter(post => post.author_id === author.author_id)
+      resolve: async(author) => {
+        // console.log(posts);
+        return await posts.filter(post => post.author_id === author.author_id)
       }
     }
   })
@@ -69,7 +57,7 @@ const RootQueryType = new GraphQLObjectType({
   description: 'Root Query',
 
   fields: () => ({
-
+    
     post: {
       type: PostType,
       description: 'A Single Post',
@@ -78,6 +66,7 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve: (parent, args) => posts.find(post => post.post_id === args.post_id)
     },
+
     posts: {
       type: new GraphQLList(PostType),
       description: 'List of All Posts',
@@ -89,6 +78,7 @@ const RootQueryType = new GraphQLObjectType({
       description: 'List of All Authors',
       resolve: () => authors
     },
+
     author: {
       type: AuthorType,
       description: 'A Single Author',
@@ -98,6 +88,7 @@ const RootQueryType = new GraphQLObjectType({
       resolve: (parent, args) => authors.find(author => author.author_id === args.author_id)
     }
   })
+
 });
 
 //   ROOT query to define all graphQl Objects CRUD OPERATIONS
@@ -116,6 +107,7 @@ const RootMutationType = new GraphQLObjectType({
         author_id: { type: new GraphQLNonNull(GraphQLInt) }
       },
       resolve: async (parent, args) => {
+        
         const data = { post_type: args.post_type, post_title: args.post_title, post_description: args.post_description, date: args.date, author_id: args.author_id }
 
         const newBPostdb = await newPost(
