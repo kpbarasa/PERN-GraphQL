@@ -1,8 +1,23 @@
 const MainService = require('../services/main-service');
+const expressGraphQL = require('express-graphql').graphqlHTTP;
+const { GraphQLSchema } = require('graphql');
+const { RootQueryType, RootMutationType } = require('../database/graphql/graphql-schema-config');
 
 module.exports = (app) => {
 
     const service = new MainService();
+    
+    // Graphql
+    const schema = new GraphQLSchema({
+        query: RootQueryType,
+        mutation: RootMutationType
+    })
+    
+    app.use('/graphql/app', expressGraphQL({
+        schema: schema,
+        graphiql: true
+    }))
+    
 
     app.post('/new/post', async (req, res, next) => {
 
