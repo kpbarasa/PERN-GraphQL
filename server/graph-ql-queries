@@ -28,7 +28,7 @@
 #
 #   Auto Complete:  Ctrl-Space (or just start typing)
 #
- {
+ query{
   post(post_id:1){
     post_title,
     author_id,
@@ -67,6 +67,22 @@
     }
     
    }
+
+  authors{
+    author_name
+  }
+
+  posts{
+    post_title
+  }
+  
+  filter_posts(post_type:"a,c,g"){
+    post_title
+    posts{
+      author_name
+    }
+  }
+
 }
 
 mutation{
@@ -95,19 +111,6 @@ mutation{
     author_age
     author_type
     author_email
-  }
-  
-}
-
-{
-  authors{
-    author_name
-  }
-}
-
-{
-  posts{
-    post_title
   }
 }
 

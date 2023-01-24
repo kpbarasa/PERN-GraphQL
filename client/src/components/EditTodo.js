@@ -1,88 +1,124 @@
 import React, { Fragment, useState } from "react";
+import { Button } from 'react-bootstrap';
 
-const EditTodo = ({ todo }) => {
-  const [description, setDescription] = useState(todo.description);
-
-  //edit description function
+const EditTodo = ({ todo, index }) => {
+  const [post_id, setPost_idn] = useState(todo.post_id);
+  const [post_type, setPost_type] = useState(todo.post_type);
+  const [post_title, setPost_title] = useState(todo.post_title);
+  const [post_description, setPost_description] = useState(todo.post_description);
 
   const updateDescription = async e => {
     e.preventDefault();
     try {
-      const body = { description };
-      const response = await fetch(
-        `http://localhost:5000/todos/${todo.todo_id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
-        }
-      );
 
-      window.location = "/";
+      const query = 'mutation{' +
+        'updatePosts(post_id:' + post_id + ',  post_type:' + post_type + ', post_title:' + post_title + ', post_description:' + post_description + '){' +
+        'post_id,' +
+        'post_type,' +
+        'post_title,' +
+        'post_description' +
+        '}' +
+        '}'
+      console.log(query);
+      const response = await fetch("http://localhost:8000/graphql/app?query=" + query, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      });
+      const responseData = await response.json();
+
+      console.log(responseData);
+      // Submit Form Response HERE?
+      // Toast Response HERE?
+      // _____________________________________________________________________________________
+      // =====================================================================================
+
+
+      // window.location = "/";
     } catch (err) {
       console.error(err.message);
     }
+
+    // try {
+    //   const body = { description };
+    //   const response = await fetch(
+    //     `http://localhost:5000/todos/${todo.todo_id}`,
+    //     {
+    //       method: "PUT",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify(body)
+    //     }
+    //   );
+
+    //   window.location = "/";
+    // } catch (err) {
+    //   console.error(err.message);
+    // }
+
   };
 
   return (
     <Fragment>
-      <button
+      <Button
+        size="sm"
         type="button"
-        class="btn btn-warning"
+        className="btn btn-warning"
         data-toggle="modal"
-        data-target={`#id${todo.todo_id}`}
+        data-target={`#id${index}`}
       >
         Edit
-      </button>
+      </Button>
 
       {/* 
         id = id10
       */}
       <div
-        class="modal"
-        id={`id${todo.todo_id}`}
-        onClick={() => setDescription(todo.description)}
+        className="modal"
+      // id={`id${todo.todo_id}`}
+      // onClick={() => setDescription(todo.description)}
       >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Edit Todo</h4>
-              <button
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h4 className="modal-title">Edit Todo</h4>
+              <Button
+                size="sm"
                 type="button"
-                class="close"
+                className="close"
                 data-dismiss="modal"
-                onClick={() => setDescription(todo.description)}
+              // onClick={() => setDescription(todo.description)}
               >
                 &times;
-              </button>
+              </Button>
             </div>
 
-            <div class="modal-body">
+            <div className="modal-body">
               <input
                 type="text"
                 className="form-control"
-                value={description}
-                onChange={e => setDescription(e.target.value)}
+                value={post_description}
+              // onChange={e => setDescription(e.target.value)}
               />
             </div>
 
-            <div class="modal-footer">
-              <button
+            <div className="modal-footer">
+              <Button
+                size="sm"
                 type="button"
-                class="btn btn-warning"
+                className="btn btn-warning"
                 data-dismiss="modal"
-                onClick={e => updateDescription(e)}
+              // onClick={e => updateDescription(e)}
               >
                 Edit
-              </button>
-              <button
+              </Button>
+              <Button
+                size="sm"
                 type="button"
-                class="btn btn-danger"
+                className="btn btn-danger"
                 data-dismiss="modal"
-                onClick={() => setDescription(todo.description)}
+              // onClick={() => setDescription(todo.description)}
               >
                 Close
-              </button>
+              </Button>
             </div>
           </div>
         </div>
