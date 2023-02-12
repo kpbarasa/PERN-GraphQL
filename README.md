@@ -19,7 +19,7 @@ This project is made up of 2 packages that share code using Yarn Workspaces.
    * cors
     
 1. Start **npm start**
-#### Query Strings
+### QUERY STRINGS:
 ##### **1. ROOTQUERY  QUERY STRINGS**
 =============================================================================== 
 {
