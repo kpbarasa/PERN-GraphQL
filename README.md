@@ -119,7 +119,7 @@ This project is made up of 2 packages that share code using Yarn Workspaces.
 ``` 
    ###### Update Post 
 ```
-  updatePosts(post_id:1,  post_type:"update", post_title:"update", post_description:"descritpion update"){
+  updatePosts(post_id:1,  post_type:"", post_title:"", post_description:" ){
     post_id,
     post_type,
     post_title,
@@ -150,11 +150,11 @@ This project is made up of 2 packages that share code using Yarn Workspaces.
   
    ###### Update Author 
 ```
-  updatePosts(post_id:1,  post_type:"update", post_title:"update", post_description:"descritpion update"){
-    post_id,
-    post_type,
-    post_title,
-    post_description
+  updateAuthor(author_id:1,  author_name:"", author_age:"", author_type:"" author_email""){
+    author_name
+    author_age
+    author_type
+    author_email
   }
 ```
   
