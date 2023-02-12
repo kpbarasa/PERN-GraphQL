@@ -5,8 +5,6 @@ class GraphQlFunctions {
 
 	async newPost(post_type, post_title, post_description, author_id) {
 
-		// console.log(post_type, post_title, post_description, author_id);
-
 		try {
 			// Check if title eists 
 			const data_exists = await pool.query("SELECT * FROM post_tb WHERE post_description = $1", [post_description]);

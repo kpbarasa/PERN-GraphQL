@@ -130,7 +130,7 @@ const RootQueryType = new GraphQLObjectType({
       resolve: () => authors
     },
 
-    author: {
+    findAuthor: {
       type: AuthorType,
       description: 'A Single Author',
       args: {
@@ -146,7 +146,7 @@ const RootQueryType = new GraphQLObjectType({
         post_id: { type: GraphQLInt }
       },
       resolve: (parent, args) => posts.find(post => post.post_id === args.post_id)
-    }
+    },
 
   })
 
@@ -159,7 +159,7 @@ const RootMutationType = new GraphQLObjectType({
   fields: () => ({
     addPost: {
       type: PostType,
-      description: 'Add Author',
+      description: 'Add Post',
       args: {
         post_type: { type: new GraphQLNonNull(GraphQLString) },
         post_title: { type: new GraphQLNonNull(GraphQLString) },
@@ -222,6 +222,67 @@ const RootMutationType = new GraphQLObjectType({
         // )
 
         return data
+
+      }
+    },
+    addAuthor: {
+      type: PostType,
+      description: 'Add Author',
+      args: {
+        author_name: { type: new GraphQLNonNull(GraphQLString) },
+        author_age: { type: new GraphQLNonNull(GraphQLString) },
+        author_email: { type: new GraphQLNonNull(GraphQLString) },
+        author_type: { type: new GraphQLNonNull(GraphQLInt) }
+      },
+      resolve: async (parent, args) => {
+
+        const date = new Date()
+
+        const data = { author_name: args.author_name, author_age: args.author_age, author_email: args.author_email, author_type: args.author_type, date: date, last_updated: date }
+
+
+        // const newBPostdb = await newPost(
+        //   data.author_name,
+        //   data.author_age,
+        //   data.author_email,
+        //   book.author_type,
+        //   data.,
+        //   data.last_updated
+        // )
+
+        // return newBPostdb
+        return data
+
+      }
+    },
+    updateAuthor: {
+      type: PostType,
+      description: 'Update posts',
+      args: {
+        author_name: { type: new GraphQLNonNull(GraphQLString) },
+        author_age: { type: new GraphQLNonNull(GraphQLString) },
+        author_email: { type: new GraphQLNonNull(GraphQLString) },
+        author_type: { type: new GraphQLNonNull(GraphQLInt) }
+      },
+      resolve: async (parent, args) => {
+
+        const date = new Date()
+
+        const data = { author_name: args.author_name, author_age: args.author_age, author_email: args.author_email, author_type: args.author_type, date: date, last_updated: date }
+
+
+        // const newBPostdb = await newPost(
+        //   data.author_name,
+        //   data.author_age,
+        //   data.author_email,
+        //   book.author_type,
+        //   data.date,
+        //   data.last_updated
+        // )
+
+        // return newBPostdb
+
+        return data;
 
       }
     },
