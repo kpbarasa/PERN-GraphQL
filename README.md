@@ -19,8 +19,8 @@ This project is made up of 2 packages that share code using Yarn Workspaces.
    * cors
     
 1. Start **npm start**
-#
-##### **ROOTQUERY**
+#### Query Strings
+##### **1. ROOTQUERY  QUERY STRINGS**
 =============================================================================== 
 {
   
@@ -100,7 +100,7 @@ This project is made up of 2 packages that share code using Yarn Workspaces.
   
   
 
-##### **MUTATION**
+##### **2. MUTATION QUERY STRINGS**
 ===============================================================================
 
    ###### New Post  
