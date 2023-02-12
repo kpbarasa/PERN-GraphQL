@@ -1,0 +1,33 @@
+version: "3"
+services:
+
+# DATABASAE  
+  postgres-db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 1988laup
+# SERVER  
+  server:
+    build:
+      dockerfile: ./src/Dockerfile
+      context: ./server
+    container_name: server
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - "postgres-db"
+    volumes:
+      - /server
+      - /server/node_modules
+
+# PROXY  
+  nginx-proxy:
+    build:
+      dockerfile: ./services
+      context: ./proxy
+    depends_on:
+      - services
+    ports:
+      - 80:80
