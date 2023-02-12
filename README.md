@@ -1,14 +1,15 @@
 ### node-express-server
+--
 #### PERN-GraphQL--APP
-##### QUERY STRINGS
 An example of  GraphQL schemas,  made with PERN TECH STACK.
-###### Packages
+
+##### Packages
 This project is made up of 2 packages that share code using Yarn Workspaces.
 
 1. react app (React.js website)
 2. server (Node JS Server)
 ---
-###### **Dependencies:**
+##### **Dependencies:**
    * express
    * nodemon (dev dependency)
    * graphql
