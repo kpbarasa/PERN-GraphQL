@@ -24,7 +24,7 @@ This project is made up of 2 packages that share code using Yarn Workspaces.
 ### QUERY STRINGS:
 ##### **1. ROOTQUERY  QUERY STRINGS**
 =============================================================================== 
-{
+
   
   ###### Dashboard Data 
 ```
