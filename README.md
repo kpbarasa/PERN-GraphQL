@@ -1,4 +1,4 @@
-### Node-express-server
+### Node-Express-Server
 ---
 #### PERN-GraphQL--APP
 An example of  GraphQL schemas,  made with PERN TECH STACK.
@@ -18,6 +18,24 @@ This project is made up of 2 packages that share code using Yarn Workspaces.
    * dotenv
    * cookie-parser
    * cors
+
+
+##### **Git Ignore:**
+###### 1.  .env
+```
+PORT= 8000
+
+# Node env
+NODE_ENV="DEVELOPMENT"
+
+# Postgres
+POSTGRES_USER = ""
+POSTGRES_HOST = ""
+POSTGRES_PASSWORD = ""
+POSTGRES_DB = ""
+POSTGRES_DB_TB =""
+POSTGRES_PORT =  ""
+```
     
 1. Start **npm start**
 ---
