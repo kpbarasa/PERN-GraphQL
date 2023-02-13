@@ -1,6 +1,4 @@
-### Node-Express-Server
----
-#### PERN-GraphQL--APP
+### PERN-GraphQL--APP
 An example of  GraphQL schemas,  made with PERN TECH STACK.
 
 ##### Packages
